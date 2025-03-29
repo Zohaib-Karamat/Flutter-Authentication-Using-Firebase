@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shopping_app/auth.dart';
+import 'package:shopping_app/pages/login_register_page.dart';
 
 
 class HomePage extends StatelessWidget {
@@ -8,8 +9,12 @@ class HomePage extends StatelessWidget {
 
   final User? user = Auth().user;
 
-  Future<void> _signOut() async {
+  Future<void> _signOut(BuildContext context) async {
     await Auth().signOut();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginPage()),
+      );
   }
 
   Widget _title(){
@@ -26,9 +31,9 @@ class HomePage extends StatelessWidget {
     return Text(user?.email ?? 'User Email');
   }
 
-  Widget _signOutButton(){
+  Widget _signOutButton(BuildContext context){
     return ElevatedButton(
-      onPressed: _signOut,
+      onPressed: () => _signOut(context),
       child: const Text('Sign Out'),
     );
   }
@@ -48,7 +53,7 @@ class HomePage extends StatelessWidget {
           children: <Widget>[
             _userUid(),
             const SizedBox(height: 16),
-            _signOutButton(),
+            _signOutButton(context),
           ],
         ),
       )
